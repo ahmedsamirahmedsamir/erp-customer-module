@@ -1,5 +1,5 @@
 module:
-  code: customers
+  code: customer
   name: Customer Management
   version: 1.0.0
   description: Complete customer relationship management with CRM features, order history, and loyalty programs

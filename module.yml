@@ -1,0 +1,223 @@
+module:
+  code: customers
+  name: Customer Management
+  version: 1.0.0
+  description: Complete customer relationship management with CRM features, order history, and loyalty programs
+  author: LinearBits
+  license: MIT
+  category: CRM
+  icon: users
+  repository: https://github.com/linearbits/erp-customer-module
+  
+  # Database tables this module uses
+  database:
+    # Core tables (shared across modules)
+    core_tables:
+      - customers
+      - customer_addresses
+    # Module-specific tables
+    tables:
+      - customer_contacts
+      - customer_orders
+      - customer_loyalty
+      - support_tickets
+      - customer_communications
+      - customer_segments
+      - customer_tags
+      - customer_notes
+  
+  # Permissions required
+  permissions:
+    - customers.view
+    - customers.create
+    - customers.edit
+    - customers.delete
+    - customers.orders.view
+    - customers.orders.create
+    - customers.loyalty.view
+    - customers.loyalty.manage
+    - customers.tickets.view
+    - customers.tickets.create
+    - customers.tickets.edit
+    - customers.communications.view
+    - customers.communications.create
+    - customers.segments.view
+    - customers.segments.create
+    - customers.segments.edit
+    - customers.segments.delete
+    - customers.tags.view
+    - customers.tags.create
+    - customers.tags.edit
+    - customers.tags.delete
+    - customers.notes.view
+    - customers.notes.create
+    - customers.notes.edit
+    - customers.notes.delete
+  
+  # API routes
+  api:
+    prefix: /api/v1/customers
+    routes:
+      - path: /
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.CustomerHandler
+      - path: /{id}
+        methods: [GET, PUT, DELETE]
+        handler: handlers.CustomerHandler
+      - path: /{id}/addresses
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.CustomerAddressHandler
+      - path: /{id}/contacts
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.CustomerContactHandler
+      - path: /{id}/orders
+        methods: [GET]
+        handler: handlers.CustomerOrderHandler
+      - path: /{id}/loyalty
+        methods: [GET, POST, PUT]
+        handler: handlers.CustomerLoyaltyHandler
+      - path: /{id}/tickets
+        methods: [GET, POST]
+        handler: handlers.CustomerTicketHandler
+      - path: /{id}/communications
+        methods: [GET, POST]
+        handler: handlers.CustomerCommunicationHandler
+      - path: /{id}/notes
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.CustomerNoteHandler
+      - path: /segments
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.CustomerSegmentHandler
+      - path: /tags
+        methods: [GET, POST, PUT, DELETE]
+        handler: handlers.CustomerTagHandler
+  
+  # Frontend routes
+  frontend:
+    routes:
+      - path: /customers
+        component: CustomerDashboard
+        title: Customer Dashboard
+      - path: /customers/list
+        component: CustomerList
+        title: Customers
+      - path: /customers/new
+        component: CustomerForm
+        title: New Customer
+      - path: /customers/{id}
+        component: CustomerDetail
+        title: Customer Details
+      - path: /customers/{id}/orders
+        component: CustomerOrders
+        title: Customer Orders
+      - path: /customers/{id}/loyalty
+        component: CustomerLoyalty
+        title: Loyalty Program
+      - path: /customers/{id}/tickets
+        component: CustomerTickets
+        title: Support Tickets
+      - path: /customers/{id}/communications
+        component: CustomerCommunications
+        title: Communications
+      - path: /customers/{id}/notes
+        component: CustomerNotes
+        title: Customer Notes
+      - path: /customers/segments
+        component: CustomerSegments
+        title: Customer Segments
+      - path: /customers/tags
+        component: CustomerTags
+        title: Customer Tags
+  
+  # Menu items
+  menu:
+    - label: Customers
+      icon: users
+      path: /customers
+      children:
+        - label: Dashboard
+          path: /customers
+        - label: All Customers
+          path: /customers/list
+        - label: Segments
+          path: /customers/segments
+        - label: Tags
+          path: /customers/tags
+        - label: Loyalty Program
+          path: /customers/loyalty
+        - label: Support Tickets
+          path: /customers/tickets
+  
+  # Settings
+  settings:
+    - key: enable_loyalty_program
+      type: boolean
+      label: Enable Loyalty Program
+      default: false
+    - key: loyalty_points_per_dollar
+      type: number
+      label: Loyalty Points per Dollar
+      default: 1
+      depends_on:
+        enable_loyalty_program: true
+    - key: loyalty_tier_thresholds
+      type: text
+      label: Loyalty Tier Thresholds (JSON)
+      default: '{"bronze": 0, "silver": 1000, "gold": 5000, "platinum": 10000}'
+      depends_on:
+        enable_loyalty_program: true
+    - key: enable_support_tickets
+      type: boolean
+      label: Enable Support Tickets
+      default: true
+    - key: auto_assign_tickets
+      type: boolean
+      label: Auto-assign Support Tickets
+      default: false
+    - key: ticket_priority_levels
+      type: select
+      label: Ticket Priority Levels
+      options:
+        - value: low
+          label: Low
+        - value: medium
+          label: Medium
+        - value: high
+          label: High
+        - value: urgent
+          label: Urgent
+      default: medium
+      depends_on:
+        enable_support_tickets: true
+    - key: enable_customer_segments
+      type: boolean
+      label: Enable Customer Segments
+      default: true
+    - key: enable_customer_tags
+      type: boolean
+      label: Enable Customer Tags
+      default: true
+    - key: require_customer_approval
+      type: boolean
+      label: Require Customer Approval
+      default: false
+    - key: customer_approval_amount
+      type: number
+      label: Require Approval for Orders Above
+      default: 1000
+      depends_on:
+        require_customer_approval: true
+    - key: enable_customer_notes
+      type: boolean
+      label: Enable Customer Notes
+      default: true
+    - key: enable_customer_communications
+      type: boolean
+      label: Enable Customer Communications
+      default: true
+    - key: communication_types
+      type: text
+      label: Communication Types (JSON)
+      default: '["email", "phone", "sms", "mail", "in-person"]'
+      depends_on:
+        enable_customer_communications: true

@@ -7,7 +7,7 @@ module:
   license: MIT
   category: CRM
   icon: users
-  repository: https://github.com/linearbits/erp-customer-module
+  repository: https://github.com/ahmedsamirahmedsamir/erp-customer-module
   
   # Database tables this module uses
   database:
